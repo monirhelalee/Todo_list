@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/view/bottom_navbar.dart';
 import 'package:todo_list/view/home_page.dart';
 
 void main() {
@@ -13,10 +14,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HomePage(),
+      home: const BottomNavbar(),
     );
   }
 }

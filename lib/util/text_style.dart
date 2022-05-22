@@ -10,4 +10,8 @@ class CommonTextStyle {
   static TextStyle detailsTextStyle = GoogleFonts.poppins();
   static TextStyle titleTextStyle =
       GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 18);
+  static TextStyle levelTextStyle = GoogleFonts.poppins(
+      color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold);
+  static TextStyle buttonTextStyle = GoogleFonts.poppins(
+      color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold);
 }
