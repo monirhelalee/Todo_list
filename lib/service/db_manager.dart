@@ -24,7 +24,7 @@ class DbManager {
     );
   }
 
-//create todo
+//create_todo
   static Future<int> createTodo(
       {required String title, String? details, String? isComplete}) async {
     final db = await DbManager.db();
@@ -35,13 +35,13 @@ class DbManager {
     return id;
   }
 
-  // all todo list
+  // all_todo_list
   static Future<List<Map<String, dynamic>>> getTodoList() async {
     final db = await DbManager.db();
     return db.query('todos', orderBy: "id");
   }
 
-  // Update todo
+  // Update_todo
   static Future<int> updateTodo(
       int id, String title, String? details, String? isComplete) async {
     final db = await DbManager.db();
@@ -58,7 +58,7 @@ class DbManager {
     return result;
   }
 
-  // Delete todo
+  // Delete_todo
   static Future<void> deleteTodo(int id) async {
     final db = await DbManager.db();
     try {

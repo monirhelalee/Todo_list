@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/view/add_todo.dart';
-import 'package:todo_list/view/home_page.dart';
+import 'package:provider/provider.dart';
+import 'package:todo_list/util/colors.dart';
+import 'package:todo_list/view/add_todo_screen.dart';
+import 'package:todo_list/view/complete_todo_screen.dart';
+import 'package:todo_list/view/home_screen.dart';
+import 'package:todo_list/view_model/todo_list_view_model.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({Key? key}) : super(key: key);
@@ -11,19 +15,31 @@ class BottomNavbar extends StatefulWidget {
 
 class _BottomNavbarState extends State<BottomNavbar> {
   @override
+  void initState() {
+    //Provider.of<ToDoListViewModel>(context);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var toDoListVm = Provider.of<ToDoListViewModel>(context, listen: true);
     return Scaffold(
-      body: AddToDo(),
-      //HomePage(),
+      body: toDoListVm.selectedPageNo == 0
+          ? const HomeScreen()
+          : toDoListVm.selectedPageNo == 1
+              ? const AddToDoScreen()
+              : const CompleteTodoScreen(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          toDoListVm.selectedPageNo = 1;
+        },
         child: Icon(
           Icons.add,
-          color:
-              //selectedPageNo == 1 ? Color(0xffB7D6B7) :
-              Colors.yellow[800],
+          color: toDoListVm.selectedPageNo == 1
+              ? CommonColors.listBackgroundColor
+              : Colors.yellow[800],
           size: 40,
         ),
         backgroundColor: Colors.white,
@@ -42,23 +58,27 @@ class _BottomNavbarState extends State<BottomNavbar> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    toDoListVm.selectedPageNo = 0;
+                  },
                   child: Icon(
                     Icons.list_rounded,
                     size: 35,
-                    color:
-                        //selectedPageNo == 0 ? Color(0xffB7D6B7) :
-                        Colors.black,
+                    color: toDoListVm.selectedPageNo == 0
+                        ? CommonColors.listBackgroundColor
+                        : Colors.black,
                   ),
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    toDoListVm.selectedPageNo = 2;
+                  },
                   child: Icon(
                     Icons.checklist_rounded,
                     size: 35,
-                    color:
-                        //selectedPageNo == 2 ? Color(0xffB7D6B7) :
-                        Colors.black,
+                    color: toDoListVm.selectedPageNo == 2
+                        ? CommonColors.listBackgroundColor
+                        : Colors.black,
                   ),
                 ),
               ],

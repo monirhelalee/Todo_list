@@ -1,35 +1,61 @@
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo_list/util/string_resources.dart';
 import 'package:todo_list/util/text_style.dart';
+import 'package:todo_list/view/bottom_navbar.dart';
+import 'package:todo_list/view_model/todo_list_view_model.dart';
 
-class AddToDo extends StatefulWidget {
-  const AddToDo({Key? key}) : super(key: key);
+class AddToDoScreen extends StatefulWidget {
+  final int? id;
+  final String? title;
+  final String? details;
+  final bool isUpdate;
+  const AddToDoScreen(
+      {Key? key, this.id, this.title, this.details, this.isUpdate = false})
+      : super(key: key);
 
   @override
-  State<AddToDo> createState() => _AddToDoState();
+  State<AddToDoScreen> createState() => _AddToDoScreenState();
 }
 
-class _AddToDoState extends State<AddToDo> {
+class _AddToDoScreenState extends State<AddToDoScreen> {
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+  @override
+  void initState() {
+    var toDoListVm = Provider.of<ToDoListViewModel>(context, listen: false);
+    if (widget.isUpdate) {
+      toDoListVm.titleController.text = widget.title!;
+      if (widget.details != null) {
+        toDoListVm.descriptionController.text = widget.details!;
+      }
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    var toDoListVm = Provider.of<ToDoListViewModel>(context, listen: true);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        // leading: widget.isUpdate
-        //     ? GestureDetector(
-        //         onTap: () {
-        //           Navigator.pop(context);
-        //         },
-        //         child: Icon(
-        //           Icons.arrow_back_ios,
-        //           color: Colors.black,
-        //         ))
-        //     : SizedBox(),
+        leading: widget.isUpdate
+            ? GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                ))
+            : SizedBox(),
         centerTitle: true,
         title: Text(
-          StringResources.addTodoListText,
+          widget.isUpdate
+              ? StringResources.updateTodoListText
+              : StringResources.addTodoListText,
           style: CommonTextStyle.appBarTextStyle,
         ),
       ),
@@ -51,7 +77,7 @@ class _AddToDoState extends State<AddToDo> {
                   height: 5,
                 ),
                 TextField(
-                  //controller: titleController,
+                  controller: toDoListVm.titleController,
                   maxLines: 1,
                   maxLength: 20,
                   decoration: InputDecoration(
@@ -81,7 +107,7 @@ class _AddToDoState extends State<AddToDo> {
                   height: 5,
                 ),
                 TextField(
-                  //controller: detailsController,
+                  controller: toDoListVm.descriptionController,
                   maxLines: 5,
                   decoration: InputDecoration(
                     filled: true,
@@ -100,7 +126,28 @@ class _AddToDoState extends State<AddToDo> {
               height: 50,
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                if (toDoListVm.titleController.text.trim().isNotEmpty) {
+                  widget.isUpdate
+                      ? toDoListVm.updateTodo(widget.id!)
+                      : toDoListVm.addNewTodo();
+                  BotToast.showText(
+                      text: widget.isUpdate
+                          ? "To-Do update successfully!"
+                          : "To-Do add successfully!");
+
+                  toDoListVm.titleController.clear();
+                  toDoListVm.descriptionController.clear();
+                  if (widget.isUpdate) {
+                    Navigator.of(context).pushAndRemoveUntil(
+                        MaterialPageRoute(
+                            builder: (context) => const BottomNavbar()),
+                        (Route<dynamic> route) => false);
+                  }
+                } else {
+                  BotToast.showText(text: "Title required!");
+                }
+              },
               child: Container(
                 height: 50,
                 decoration: BoxDecoration(
@@ -108,8 +155,9 @@ class _AddToDoState extends State<AddToDo> {
                     borderRadius: BorderRadius.circular(5)),
                 child: Center(
                     child: Text(
-                  // widget.isUpdate ? "Update" :
-                  StringResources.saveText,
+                  widget.isUpdate
+                      ? StringResources.updateText
+                      : StringResources.saveText,
                   style: CommonTextStyle.buttonTextStyle,
                 )),
               ),
