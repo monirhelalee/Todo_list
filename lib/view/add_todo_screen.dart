@@ -24,6 +24,9 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
   @override
   void initState() {
     var toDoListVm = Provider.of<ToDoListViewModel>(context, listen: false);
+    if (!widget.isUpdate) {
+      toDoListVm.reset();
+    }
     if (widget.isUpdate) {
       toDoListVm.titleController.text = widget.title!;
       if (widget.details != null) {
@@ -143,6 +146,9 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                         MaterialPageRoute(
                             builder: (context) => const BottomNavbar()),
                         (Route<dynamic> route) => false);
+                  }
+                  if (!widget.isUpdate) {
+                    toDoListVm.selectedPageNo = 0;
                   }
                 } else {
                   BotToast.showText(text: "Title required!");

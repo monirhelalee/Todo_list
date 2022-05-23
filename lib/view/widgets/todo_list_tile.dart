@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:todo_list/util/colors.dart';
 import 'package:todo_list/util/text_style.dart';
+import 'package:todo_list/view/add_todo_screen.dart';
 
 class ToDoListTile extends StatefulWidget {
-  const ToDoListTile({Key? key}) : super(key: key);
+  final int? id;
+  final String? title;
+  final String? details;
+  final String? createdAt;
+  final bool? isUpdate;
+  const ToDoListTile({
+    Key? key,
+    this.id,
+    this.title,
+    this.details,
+    this.isUpdate,
+    this.createdAt,
+  }) : super(key: key);
 
   @override
   State<ToDoListTile> createState() => _ToDoListTileState();
@@ -28,9 +41,10 @@ class _ToDoListTileState extends State<ToDoListTile> {
             children: [
               Row(
                 children: [
+                  //check box
                   Checkbox(value: true, onChanged: (v) {}),
                   Text(
-                    "title",
+                    widget.title ?? "",
                     style: CommonTextStyle.titleTextStyle,
                   ),
                 ],
@@ -39,7 +53,17 @@ class _ToDoListTileState extends State<ToDoListTile> {
                 children: [
                   //edit
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => AddToDoScreen(
+                                    details: widget.details,
+                                    title: widget.details,
+                                    id: widget.id,
+                                    isUpdate: true,
+                                  )));
+                    },
                     child: Container(
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
@@ -70,7 +94,7 @@ class _ToDoListTileState extends State<ToDoListTile> {
           SizedBox(
             width: MediaQuery.of(context).size.width * .9,
             child: Text(
-              "details",
+              widget.details ?? "",
               style: CommonTextStyle.detailsTextStyle,
               softWrap: true,
             ),

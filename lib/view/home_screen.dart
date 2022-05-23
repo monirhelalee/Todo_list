@@ -17,7 +17,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     var toDoListVm = Provider.of<ToDoListViewModel>(context, listen: false);
-    toDoListVm.getNotCompletedToDoList();
+    Future.delayed(Duration.zero, () async {
+      await toDoListVm.getNotCompletedToDoList();
+    });
+
     super.initState();
   }
 
@@ -35,11 +38,23 @@ class _HomeScreenState extends State<HomeScreen> {
           style: CommonTextStyle.appBarTextStyle,
         ),
       ),
-      body: ListView.builder(
-          itemCount: 10,
-          itemBuilder: (context, index) {
-            return ToDoListTile();
-          }),
+      body: toDoListVm.isLoading
+          ? const CircularProgressIndicator()
+          : toDoListVm.notCompleteTodoList.isEmpty
+              ? const Center(
+                  child: Text("No To-Do available"),
+                )
+              : ListView.builder(
+                  itemCount: toDoListVm.notCompleteTodoList.length,
+                  itemBuilder: (context, index) {
+                    return ToDoListTile(
+                      id: toDoListVm.notCompleteTodoList[index]["id"],
+                      title: toDoListVm.notCompleteTodoList[index]["title"],
+                      details: toDoListVm.notCompleteTodoList[index]["details"],
+                      createdAt: toDoListVm.notCompleteTodoList[index]
+                          ["createdAt"],
+                    );
+                  }),
     );
   }
 }

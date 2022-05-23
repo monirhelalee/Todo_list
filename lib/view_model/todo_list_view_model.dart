@@ -57,6 +57,17 @@ class ToDoListViewModel extends ChangeNotifier {
     // getEmployeeList();
   }
 
+  reset() {
+    //_selectedPageNo = 0;
+    // _todoList = [];
+    // _completeTodoList = [];
+    // _notCompleteTodoList = [];
+    titleController.clear();
+    descriptionController.clear();
+    _isLoading = true;
+    _isUpdate = false;
+  }
+
   int get selectedPageNo => _selectedPageNo;
   bool get isLoading => _isLoading;
   bool get isUpdate => _isUpdate;
