@@ -39,11 +39,11 @@ class ToDoListViewModel extends ChangeNotifier {
     final getData = await DbManager.getTodoList();
     _todoList = getData;
     _notCompleteTodoList = [];
-    todoList.forEach((element) {
+    for (var element in todoList) {
       if (element["isComplete"] == "f") {
         _notCompleteTodoList.add(element);
       }
-    });
+    }
     _isLoading = false;
     notifyListeners();
   }
@@ -63,7 +63,7 @@ class ToDoListViewModel extends ChangeNotifier {
         _list1.add(item);
       }
     }
-    print(" test search ${_list1.length}");
+    //print(" test search ${_list1.length}");
     _notCompleteTodoSearchList.clear();
     _notCompleteTodoSearchList = _list1;
     _isLoading = false;
@@ -85,7 +85,7 @@ class ToDoListViewModel extends ChangeNotifier {
         _list1.add(item);
       }
     }
-    print(" complete todo search ${_list1.length}");
+    //print(" complete todo search ${_list1.length}");
     _completeTodoSearchList.clear();
     _completeTodoSearchList = _list1;
     _isLoading = false;
@@ -96,11 +96,11 @@ class ToDoListViewModel extends ChangeNotifier {
     final getData = await DbManager.getTodoList();
     _todoList = getData;
     _completeTodoList = [];
-    todoList.forEach((element) {
+    for (var element in todoList) {
       if (element["isComplete"] == "t") {
         _completeTodoList.add(element);
       }
-    });
+    }
     _isLoading = false;
     notifyListeners();
   }
@@ -117,7 +117,6 @@ class ToDoListViewModel extends ChangeNotifier {
     await DbManager.updateTodo(
         id, titleController.text, descriptionController.text, "f");
     notifyListeners();
-    // getEmployeeList();
   }
 
   Future<void> completeTodo(
@@ -127,21 +126,15 @@ class ToDoListViewModel extends ChangeNotifier {
       String? details}) async {
     await DbManager.updateTodo(id, title, details, isComplete);
     notifyListeners();
-    // getEmployeeList();
   }
 
   Future<void> deleteTodo({required int id}) async {
     await DbManager.deleteTodo(id);
     BotToast.showText(text: "Successfully deleted!");
     notifyListeners();
-    // getEmployeeList();
   }
 
   reset() {
-    //_selectedPageNo = 0;
-    // _todoList = [];
-    // _completeTodoList = [];
-    // _notCompleteTodoList = [];
     _notCompleteTodoSearchList = [];
     titleController.clear();
     descriptionController.clear();

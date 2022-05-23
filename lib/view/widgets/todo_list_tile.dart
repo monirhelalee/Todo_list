@@ -47,10 +47,13 @@ class _ToDoListTileState extends State<ToDoListTile> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //check box
                   Checkbox(
                       value: widget.isComplete == "t" ? true : false,
+                      fillColor: MaterialStateProperty.all(Colors.white),
+                      checkColor: Colors.blue,
                       onChanged: (v) async {
                         if (v != null) {
                           await toDoListVm
@@ -80,11 +83,15 @@ class _ToDoListTileState extends State<ToDoListTile> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.title ?? "",
-                        style: widget.isComplete == "f"
-                            ? CommonTextStyle.titleTextStyle
-                            : CommonTextStyle.titleTextWithLineThroughStyle,
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * .55,
+                        child: Text(
+                          widget.title ?? "",
+                          maxLines: 3,
+                          style: widget.isComplete == "f"
+                              ? CommonTextStyle.titleTextStyle
+                              : CommonTextStyle.titleTextWithLineThroughStyle,
+                        ),
                       ),
                       Container(
                         padding: const EdgeInsets.only(right: 3, left: 3),

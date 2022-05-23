@@ -119,7 +119,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         toDoListVm.onBoardPageController
                             .jumpToPage(toDoListVm.onBoardingIndex);
                       }
-                      ;
+
                       if (toDoListVm.onBoardingIndex == 3) {
                         var storage = await SharedPreferences.getInstance();
                         storage.setBool("isFirstTimeDoneOnBoarding", true);

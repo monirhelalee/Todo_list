@@ -82,7 +82,7 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                 TextField(
                   controller: toDoListVm.titleController,
                   maxLines: 1,
-                  maxLength: 20,
+                  maxLength: 40,
                   decoration: InputDecoration(
                     filled: true,
                     hintText: StringResources.titleHintText,
