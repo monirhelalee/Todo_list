@@ -40,41 +40,78 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: Column(
         children: [
-          TextField(
-            controller: toDoListVm.titleController,
-            maxLines: 1,
-            maxLength: 20,
-            decoration: InputDecoration(
-              filled: true,
-              hintText: StringResources.titleHintText,
-              border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(5),
-                  borderSide: const BorderSide(
-                    color: Colors.black,
-                    width: 1.0,
-                  )),
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: TextField(
+              controller: toDoListVm.notCompleteTodoSearchController,
+              maxLines: 1,
+              decoration: InputDecoration(
+                filled: true,
+                hintText: StringResources.searchHintText,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                      color: Colors.black,
+                      width: 1.0,
+                    )),
+              ),
+              onChanged: (v) {
+                toDoListVm.getSearchResultNotCompletedToDoList(q: v);
+              },
             ),
           ),
-          toDoListVm.isLoading
-              ? const CircularProgressIndicator()
-              : toDoListVm.notCompleteTodoList.isEmpty
-                  ? const Center(
-                      child: Text("No To-Do available"),
-                    )
-                  : ListView.builder(
-                      itemCount: toDoListVm.notCompleteTodoList.length,
-                      itemBuilder: (context, index) {
-                        return ToDoListTile(
-                          id: toDoListVm.notCompleteTodoList[index]["id"],
-                          title: toDoListVm.notCompleteTodoList[index]["title"],
-                          details: toDoListVm.notCompleteTodoList[index]
-                              ["details"],
-                          createdAt: toDoListVm.notCompleteTodoList[index]
-                              ["createdAt"],
-                          isComplete: toDoListVm.notCompleteTodoList[index]
-                              ["isComplete"],
-                        );
-                      }),
+          Expanded(
+            child: toDoListVm.isLoading
+                ? const CircularProgressIndicator()
+                : toDoListVm.notCompleteTodoList.isEmpty ||
+                        (toDoListVm.notCompleteTodoSearchController.text
+                                .isNotEmpty &&
+                            toDoListVm.notCompleteTodoSearchList.isEmpty)
+                    ? const Center(
+                        child: Text("No To-Do available"),
+                      )
+                    : ListView.builder(
+                        itemCount: toDoListVm
+                                .notCompleteTodoSearchController.text.isEmpty
+                            ? toDoListVm.notCompleteTodoList.length
+                            : toDoListVm.notCompleteTodoSearchList.length,
+                        itemBuilder: (context, index) {
+                          return ToDoListTile(
+                            id: toDoListVm.notCompleteTodoSearchController.text
+                                    .isEmpty
+                                ? toDoListVm.notCompleteTodoList[index]["id"]
+                                : toDoListVm.notCompleteTodoSearchList[index]
+                                    ["id"],
+                            title: toDoListVm.notCompleteTodoSearchController
+                                    .text.isEmpty
+                                ? toDoListVm.notCompleteTodoList[index]["title"]
+                                : toDoListVm.notCompleteTodoSearchList[index]
+                                    ["title"],
+                            details: toDoListVm.notCompleteTodoSearchController
+                                    .text.isEmpty
+                                ? toDoListVm.notCompleteTodoList[index]
+                                    ["details"]
+                                : toDoListVm.notCompleteTodoSearchList[index]
+                                    ["details"],
+                            createdAt: toDoListVm
+                                    .notCompleteTodoSearchController
+                                    .text
+                                    .isEmpty
+                                ? toDoListVm.notCompleteTodoList[index]
+                                    ["createdAt"]
+                                : toDoListVm.notCompleteTodoSearchList[index]
+                                    ["createdAt"],
+                            isComplete: toDoListVm
+                                    .notCompleteTodoSearchController
+                                    .text
+                                    .isEmpty
+                                ? toDoListVm.notCompleteTodoList[index]
+                                    ["isComplete"]
+                                : toDoListVm.notCompleteTodoSearchList[index]
+                                    ["isComplete"],
+                          );
+                        }),
+          ),
         ],
       ),
     );

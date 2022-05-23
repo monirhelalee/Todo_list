@@ -64,6 +64,17 @@ class _ToDoListTileState extends State<ToDoListTile> {
                               .then(
                                   (value) => toDoListVm.getCompletedToDoList());
                         }
+                        if (toDoListVm
+                            .completeTodoSearchController.text.isEmpty) {
+                          toDoListVm.getSearchResultCompletedToDoList(
+                              q: toDoListVm.completeTodoSearchController.text);
+                        }
+                        if (toDoListVm
+                            .notCompleteTodoSearchController.text.isEmpty) {
+                          toDoListVm.getSearchResultNotCompletedToDoList(
+                              q: toDoListVm
+                                  .notCompleteTodoSearchController.text);
+                        }
                       }),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,

@@ -38,25 +38,77 @@ class _CompleteToDoScreenState extends State<CompleteToDoScreen> {
           style: CommonTextStyle.appBarTextStyle,
         ),
       ),
-      body: toDoListVm.isLoading
-          ? const CircularProgressIndicator()
-          : toDoListVm.notCompleteTodoList.isEmpty
-              ? const Center(
-                  child: Text("No completed To-Do available"),
-                )
-              : ListView.builder(
-                  itemCount: toDoListVm.completeTodoList.length,
-                  itemBuilder: (context, index) {
-                    return ToDoListTile(
-                      id: toDoListVm.completeTodoList[index]["id"],
-                      title: toDoListVm.completeTodoList[index]["title"],
-                      details: toDoListVm.completeTodoList[index]["details"],
-                      createdAt: toDoListVm.completeTodoList[index]
-                          ["createdAt"],
-                      isComplete: toDoListVm.completeTodoList[index]
-                          ["isComplete"],
-                    );
-                  }),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: TextField(
+              controller: toDoListVm.completeTodoSearchController,
+              maxLines: 1,
+              decoration: InputDecoration(
+                filled: true,
+                hintText: StringResources.searchHintText,
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                    borderSide: const BorderSide(
+                      color: Colors.black,
+                      width: 1.0,
+                    )),
+              ),
+              onChanged: (v) {
+                toDoListVm.getSearchResultCompletedToDoList(q: v);
+              },
+            ),
+          ),
+          Expanded(
+            child: toDoListVm.isLoading
+                ? const CircularProgressIndicator()
+                : toDoListVm.completeTodoList.isEmpty ||
+                        (toDoListVm
+                                .completeTodoSearchController.text.isNotEmpty &&
+                            toDoListVm.completeTodoSearchList.isEmpty)
+                    ? const Center(
+                        child: Text("No completed To-Do available"),
+                      )
+                    : ListView.builder(
+                        itemCount:
+                            toDoListVm.completeTodoSearchController.text.isEmpty
+                                ? toDoListVm.completeTodoList.length
+                                : toDoListVm.completeTodoSearchList.length,
+                        itemBuilder: (context, index) {
+                          return ToDoListTile(
+                            id: toDoListVm
+                                    .completeTodoSearchController.text.isEmpty
+                                ? toDoListVm.completeTodoList[index]["id"]
+                                : toDoListVm.completeTodoSearchList[index]
+                                    ["id"],
+                            title: toDoListVm
+                                    .completeTodoSearchController.text.isEmpty
+                                ? toDoListVm.completeTodoList[index]["title"]
+                                : toDoListVm.completeTodoSearchList[index]
+                                    ["title"],
+                            details: toDoListVm
+                                    .completeTodoSearchController.text.isEmpty
+                                ? toDoListVm.completeTodoList[index]["details"]
+                                : toDoListVm.completeTodoSearchList[index]
+                                    ["details"],
+                            createdAt: toDoListVm
+                                    .completeTodoSearchController.text.isEmpty
+                                ? toDoListVm.completeTodoList[index]
+                                    ["createdAt"]
+                                : toDoListVm.completeTodoSearchList[index]
+                                    ["createdAt"],
+                            isComplete: toDoListVm
+                                    .completeTodoSearchController.text.isEmpty
+                                ? toDoListVm.completeTodoList[index]
+                                    ["isComplete"]
+                                : toDoListVm.completeTodoSearchList[index]
+                                    ["isComplete"],
+                          );
+                        }),
+          ),
+        ],
+      ),
     );
   }
 }
