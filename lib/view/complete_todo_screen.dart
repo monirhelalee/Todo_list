@@ -62,7 +62,10 @@ class _CompleteToDoScreenState extends State<CompleteToDoScreen> {
           ),
           Expanded(
             child: toDoListVm.isLoading
-                ? const CircularProgressIndicator()
+                ? const Center(
+                  child: SizedBox(
+                      height: 30, width: 30, child: CircularProgressIndicator()),
+                )
                 : toDoListVm.completeTodoList.isEmpty ||
                         (toDoListVm
                                 .completeTodoSearchController.text.isNotEmpty &&

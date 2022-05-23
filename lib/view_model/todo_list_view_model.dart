@@ -4,6 +4,7 @@ import 'package:todo_list/service/db_manager.dart';
 
 class ToDoListViewModel extends ChangeNotifier {
   int _selectedPageNo = 0;
+  int _onBoardingIndex = 0;
   List<Map<String, dynamic>> _todoList = [];
   List<Map<String, dynamic>> _completeTodoList = [];
   List<Map<String, dynamic>> _notCompleteTodoList = [];
@@ -15,11 +16,17 @@ class ToDoListViewModel extends ChangeNotifier {
       TextEditingController();
   final TextEditingController titleController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
+  final PageController onBoardPageController = PageController();
   bool _isLoading = true;
   bool _isUpdate = false;
 
   set selectedPageNo(int v) {
     _selectedPageNo = v;
+    notifyListeners();
+  }
+
+  set onBoardingIndex(int v) {
+    _onBoardingIndex = v;
     notifyListeners();
   }
 
@@ -146,6 +153,7 @@ class ToDoListViewModel extends ChangeNotifier {
   }
 
   int get selectedPageNo => _selectedPageNo;
+  int get onBoardingIndex => _onBoardingIndex;
   bool get isLoading => _isLoading;
   bool get isUpdate => _isUpdate;
   List<Map<String, dynamic>> get todoList => _todoList;

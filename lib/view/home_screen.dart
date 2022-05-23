@@ -62,7 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             child: toDoListVm.isLoading
-                ? const CircularProgressIndicator()
+                ? const Center(
+                    child: SizedBox(
+                        height: 30,
+                        width: 30,
+                        child: CircularProgressIndicator()),
+                  )
                 : toDoListVm.notCompleteTodoList.isEmpty ||
                         (toDoListVm.notCompleteTodoSearchController.text
                                 .isNotEmpty &&
