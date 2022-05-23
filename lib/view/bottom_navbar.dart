@@ -28,7 +28,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
           ? const HomeScreen()
           : toDoListVm.selectedPageNo == 1
               ? const AddToDoScreen()
-              : const CompleteTodoScreen(),
+              : const CompleteToDoScreen(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       resizeToAvoidBottomInset: false,
       floatingActionButton: FloatingActionButton(

@@ -28,7 +28,20 @@ class ToDoListViewModel extends ChangeNotifier {
     _notCompleteTodoList = [];
     todoList.forEach((element) {
       if (element["isComplete"] == "f") {
-        notCompleteTodoList.add(element);
+        _notCompleteTodoList.add(element);
+      }
+    });
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  getCompletedToDoList() async {
+    final getData = await DbManager.getTodoList();
+    _todoList = getData;
+    _completeTodoList = [];
+    todoList.forEach((element) {
+      if (element["isComplete"] == "t") {
+        _completeTodoList.add(element);
       }
     });
     _isLoading = false;
@@ -46,6 +59,16 @@ class ToDoListViewModel extends ChangeNotifier {
   Future<void> updateTodo(int id) async {
     await DbManager.updateTodo(
         id, titleController.text, descriptionController.text, "f");
+    notifyListeners();
+    // getEmployeeList();
+  }
+
+  Future<void> completeTodo(
+      {required int id,
+      required String title,
+      required String isComplete,
+      String? details}) async {
+    await DbManager.updateTodo(id, title, details, isComplete);
     notifyListeners();
     // getEmployeeList();
   }

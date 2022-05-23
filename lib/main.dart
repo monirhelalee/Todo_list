@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         builder: BotToastInit(),
         navigatorObservers: [BotToastNavigatorObserver()],
         theme: ThemeData(
-          primarySwatch: Colors.yellow,
+          primarySwatch: Colors.blue,
         ),
         home: const BottomNavbar(),
       ),

@@ -13,6 +13,7 @@ class ToDoListTile extends StatefulWidget {
   final String? details;
   final String? createdAt;
   final bool? isUpdate;
+  final String? isComplete;
   const ToDoListTile({
     Key? key,
     required this.id,
@@ -20,6 +21,7 @@ class ToDoListTile extends StatefulWidget {
     this.details,
     this.isUpdate,
     this.createdAt,
+    this.isComplete,
   }) : super(key: key);
 
   @override
@@ -47,18 +49,45 @@ class _ToDoListTileState extends State<ToDoListTile> {
               Row(
                 children: [
                   //check box
-                  Checkbox(value: true, onChanged: (v) {}),
+                  Checkbox(
+                      value: widget.isComplete == "t" ? true : false,
+                      onChanged: (v) async {
+                        if (v != null) {
+                          await toDoListVm
+                              .completeTodo(
+                                  id: widget.id,
+                                  title: widget.title ?? "",
+                                  isComplete: v ? "t" : "f",
+                                  details: widget.details ?? "")
+                              .then((value) =>
+                                  toDoListVm.getNotCompletedToDoList())
+                              .then(
+                                  (value) => toDoListVm.getCompletedToDoList());
+                        }
+                      }),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         widget.title ?? "",
-                        style: CommonTextStyle.titleTextStyle,
+                        style: widget.isComplete == "f"
+                            ? CommonTextStyle.titleTextStyle
+                            : CommonTextStyle.titleTextWithLineThroughStyle,
                       ),
-                      Text(
-                        "Created at: ${DateFormat('dd MMM yyyy').format(DateTime.parse(widget.createdAt ?? ""))}",
-                        style: GoogleFonts.poppins(fontSize: 12),
+                      Container(
+                        padding: const EdgeInsets.only(right: 3, left: 3),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          //color: Colors.yellow,
+                        ),
+                        child: Text(
+                          "Created at: ${DateFormat('dd MMM yyyy').format(DateTime.parse(widget.createdAt ?? ""))}",
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            color: Colors.black54,
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -69,36 +98,41 @@ class _ToDoListTileState extends State<ToDoListTile> {
                 child: Row(
                   children: [
                     //edit
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => AddToDoScreen(
-                                      details: widget.details,
-                                      title: widget.details,
-                                      id: widget.id,
-                                      isUpdate: true,
-                                    )));
-                      },
-                      child: Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(100)),
-                          child: const Icon(Icons.edit_outlined)),
-                    ),
+                    widget.isComplete == "t"
+                        ? const SizedBox()
+                        : GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => AddToDoScreen(
+                                            details: widget.details,
+                                            title: widget.title,
+                                            id: widget.id,
+                                            isUpdate: true,
+                                          )));
+                            },
+                            child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(100)),
+                                child: const Icon(Icons.edit_outlined)),
+                          ),
                     const SizedBox(
                       width: 10,
                     ),
                     //delete
                     GestureDetector(
                       onTap: () async {
-                        await toDoListVm.deleteTodo(id: widget.id).then(
-                            (value) => toDoListVm.getNotCompletedToDoList());
+                        await toDoListVm
+                            .deleteTodo(id: widget.id)
+                            .then(
+                                (value) => toDoListVm.getNotCompletedToDoList())
+                            .then((value) => toDoListVm.getCompletedToDoList());
                       },
                       child: Container(
-                          padding: EdgeInsets.all(5),
+                          padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(100)),
@@ -118,7 +152,9 @@ class _ToDoListTileState extends State<ToDoListTile> {
               width: MediaQuery.of(context).size.width * .9,
               child: Text(
                 widget.details ?? "",
-                style: CommonTextStyle.detailsTextStyle,
+                style: widget.isComplete == "f"
+                    ? CommonTextStyle.detailsTextStyle
+                    : CommonTextStyle.detailsWithLineThroughTextStyle,
                 softWrap: true,
               ),
             ),
