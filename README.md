@@ -24,7 +24,7 @@
     <td><img src="/assets/todo_list_screen.jpeg" width=270 ></td>
     <td><img src="/assets/add_todo_screen.jpeg" width=270 ></td>
     <td><img src="/assets/update_todo_screen.jpeg" width=270 ></td>
-    <td><img src="/assets/complete_todo_screen.jpeg" width=270 ></td>
+    <td><img src="/assets/complete_todo_list_screen.jpeg" width=270 ></td>
     <td><img src="/assets/search_todo_screen.jpeg" width=270 ></td>
   </tr>
  </table>
