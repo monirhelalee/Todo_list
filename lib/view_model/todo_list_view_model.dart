@@ -50,9 +50,9 @@ class ToDoListViewModel extends ChangeNotifier {
     // getEmployeeList();
   }
 
-  void deleteTodo(int id) async {
+  Future<void> deleteTodo({required int id}) async {
     await DbManager.deleteTodo(id);
-    BotToast.showText(text: "Successfully deleted the user!");
+    BotToast.showText(text: "Successfully deleted!");
     notifyListeners();
     // getEmployeeList();
   }
