@@ -1,10 +1,8 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/view/bottom_navbar.dart';
-import 'package:todo_list/view/home_screen.dart';
 import 'package:todo_list/view_model/todo_list_view_model.dart';
 
 class OnBoardingScreen extends StatefulWidget {
