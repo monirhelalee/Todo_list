@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_list/view/bottom_navbar.dart';
-import 'package:todo_list/view/home_screen.dart';
 import 'package:todo_list/view/onboarding_screen.dart';
 
 class Root extends StatefulWidget {

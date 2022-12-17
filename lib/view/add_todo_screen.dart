@@ -49,11 +49,11 @@ class _AddToDoScreenState extends State<AddToDoScreen> {
                 onTap: () {
                   Navigator.pop(context);
                 },
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back_ios,
                   color: Colors.black,
                 ))
-            : SizedBox(),
+            : const SizedBox(),
         centerTitle: true,
         title: Text(
           widget.isUpdate

@@ -142,7 +142,7 @@ class ToDoListViewModel extends ChangeNotifier {
     notCompleteTodoSearchController.clear();
     _isLoading = true;
     _isUpdate = false;
-    notifyListeners();
+    //notifyListeners();
   }
 
   int get selectedPageNo => _selectedPageNo;

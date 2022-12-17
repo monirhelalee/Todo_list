@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/root.dart';
 import 'package:todo_list/util/string_resources.dart';
-import 'package:todo_list/view/bottom_navbar.dart';
-import 'package:todo_list/view/home_screen.dart';
-import 'package:todo_list/view/onboarding_screen.dart';
 import 'package:todo_list/view_model/todo_list_view_model.dart';
 
 void main() {
